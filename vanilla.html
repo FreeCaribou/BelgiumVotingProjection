@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<head>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div class="container mt-5">
+	<div class="row">
+	<div class="col-lg-6">
+		<div class="mb-3">
+			<label for="numberOfSeatFI" class="form-label">Number of Seat</label>
+			<input type="number" class="form-control" id="numberOfSeatFI" placeholder="49" value="49">
+		</div>
+		
+		<div class="mb-3">
+			<label for="totalVoteFI" class="form-label">Total vote</label>
+			<input type="number" class="form-control" id="totalVoteFI" placeholder="10000" value="74049">
+		</div>
+		
+		<div class="mb-3">
+			<label for="whiteVoteFI" class="form-label">White vote</label>
+			<input type="number" class="form-control" id="whiteVoteFI" placeholder="100" value="4139">
+		</div>
+	  	
+	  	<p id="validVoteText"></p>
+	  	
+	  	<h6>Repartition of vote:<h6>
+	  	
+	  	<div id="party-card">
+	  	<div class="card">
+	  		<div class="card-body row">
+				<div class="col">
+				<label for="pnFI-0" class="form-label">Party name</label>
+				<input type="text" class="form-control" name="party-name-form" id="pnFI-0" placeholder="PTB">
+				</div>
+				
+				<div class="col">
+				<label for="pvFI-0" class="form-label">Vote</label>
+				<input type="number" class="form-control" name="party-vote-form" id="pvFI-0" placeholder="10000">
+				</div>
+	  		</div>
+	  	</div>
+	  	
+	  	<div class="card">
+	  		<div class="card-body row">
+				<div class="col">
+				<label for="pnFI-0" class="form-label">Party name</label>
+				<input type="text" class="form-control" name="party-name-form" id="pnFI-0" placeholder="PTB">
+				</div>
+				
+				<div class="col">
+				<label for="pvFI-0" class="form-label">Vote</label>
+				<input type="number" class="form-control" name="party-vote-form" id="pvFI-0" placeholder="10000">
+				</div>
+	  		</div>
+	  	</div>
+	  	</div>
+	  	
+	  	<button class="btn btn-primary mt-3" onclick="btnAddPartyClick()">Add Party</button>
+	  	
+	  	<button class="btn btn-success mt-3" id="btnCheck" onclick="btnCheckClick()">Check</button>
+	</div>
+	<div class="col-lg-6">
+	
+		<a href="https://elections2018.brussels/electeur/les-elections/la-procedure-dattribution-des-sieges.html">
+			How work the repartition of votes to seats ? (in french)
+		</a>
+	
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">Party</th>
+					<th scope="col">Seats</th>
+					<th scope="col">%</th>
+					<th scope="col">Total vote</th>
+				</tr>
+			</thead>
+			<tbody id="main">
+				
+			</tbody>
+		</table>
+		
+	</div>
+	</div>
+	</div>
+</body>
+</html>
+
+<script>
+
+	function btnAddPartyClick() {
+		console.log('add party click')
+		var parent = document.getElementById("party-card");
+		
+		var bigCard = document.createElement('div');
+		bigCard.classList.add('card');
+		
+		var bodyCard = document.createElement('div');
+		bodyCard.classList.add('card-body');
+		bodyCard.classList.add('row');
+		
+		var firstCol = document.createElement('div');
+		firstCol.classList.add('col');
+		var l = document.createElement('label');
+		l.classList.add('form-label');
+		l.appendChild(document.createTextNode(`Party Name`));
+		firstCol.appendChild(l);
+		var input = document.createElement('input');
+		input.classList.add('form-control');
+		input.setAttribute('name','party-name-form');
+		firstCol.appendChild(input);
+		
+		var secondCol = document.createElement('div');
+		secondCol.classList.add('col');
+		var l = document.createElement('label');
+		l.classList.add('form-label');
+		l.appendChild(document.createTextNode(`Vote`));
+		secondCol.appendChild(l);
+		var input = document.createElement('input');
+		input.classList.add('form-control');
+		input.setAttribute('name','party-vote-form');
+		input.setAttribute('type','number');
+		secondCol.appendChild(input);
+		
+		bodyCard.appendChild(firstCol);
+		bodyCard.appendChild(secondCol);
+		bigCard.appendChild(bodyCard);
+		parent.appendChild(bigCard);
+		
+	}
+	
+	function btnCheckClick() {
+		console.log('check click')
+		
+		var allNameForm = document.getElementsByName('party-name-form');
+		var allVoteForm = document.getElementsByName('party-vote-form');
+		
+		var bigArray = [];
+		for (let i = 0; i < allNameForm.length; i++) {
+			console.log('lol')
+			bigArray.push(
+				{party: allNameForm[i].value, score: allVoteForm[i].value}
+			);
+		}
+		
+		console.log('and the big array ?', bigArray)
+		
+		var parent = document.getElementById("main");
+		while (parent.firstChild) {
+			parent.firstChild.remove();
+		}
+		
+		var seatsToTake = document.getElementById("numberOfSeatFI").value;
+	
+		var totalVote = document.getElementById("totalVoteFI").value;
+		var whiteVote = document.getElementById("whiteVoteFI").value;
+		var validVote = totalVote - whiteVote;
+		
+		var elementForvalidVote = document.getElementById("validVoteText");
+		while (elementForvalidVote.firstChild) {
+			elementForvalidVote.firstChild.remove();
+		}
+		var text = document.createTextNode(`Valid vote: ${validVote}`);
+		elementForvalidVote.appendChild(text);
+		
+		/*
+		var bigArray = [
+			{party: 'CDH', score: 6543},
+			{party: 'Ecolo-Groen', score: 11847},
+			{party: 'VB', score: 1138},
+			{party: 'Defi', score: 5137},
+			{party: 'PS', score: 19997},
+			{party: 'MR-VLD', score: 9772},
+			{party: 'NVA', score: 2606},
+			{party: 'PTB-PVDA', score: 8159},
+			{party: 'Change', score: 2269},
+		];
+		*/
+		
+		var repartition = [];
+		
+		var i = 1;
+		var isOkay = false;
+		
+		do {
+			i++;
+			bigArray.forEach(e => {
+				var scoreOfThisRow = Math.round(e.score / i);
+		
+				repartition.push({
+					party: e.party, number: scoreOfThisRow, i
+				});
+			});
+			isOkay = i === 100;
+		} while(!isOkay)
+		
+		repartition.sort((a,b) => {
+			if (a.number <= b.number) {
+				return 1;
+			} else {
+				return -1;
+			}
+		});
+		
+		repartition = repartition.slice(0, seatsToTake);
+		
+		
+		bigArray.forEach(p => {
+			var seats = repartition.filter(r => r.party === p.party).length
+			console.log(p.party, seats)	
+			
+			var element = document.getElementById("main");
+			var tag = document.createElement("tr");
+			
+			var colP = document.createElement("th");
+			var text = document.createTextNode(`${p.party}`);
+			colP.appendChild(text);
+			tag.appendChild(colP);
+			
+			var colP = document.createElement("th");
+			var text = document.createTextNode(`${seats}`);
+			colP.appendChild(text);
+			tag.appendChild(colP);
+			
+			var colP = document.createElement("th");
+			var text = document.createTextNode(`${((p.score / validVote) * 100).toFixed(2)}`);
+			colP.appendChild(text);
+			tag.appendChild(colP);
+			
+			var colP = document.createElement("th");
+			var text = document.createTextNode(`${p.score}`);
+			colP.appendChild(text);
+			tag.appendChild(colP);
+			
+			element.appendChild(tag);
+		});
+	}
+	
+</script>
+
+
