@@ -34,40 +34,76 @@ async function mockProjection(repo, municipalities: Municipality[]) {
     const projectionRepo = repo.getRepository(Projection);
     return [
         await projectionRepo.save(await projectionRepo.create(
-            { officiel: true, date: new Date('2018-10-14'), validVotes: 70467, municipality: municipalities[0] }
-        ))
+            { officiel: true, date: new Date('2018-10-14'), validVotes: 70467, municipality: municipalities[0], label: 'Official 2018' }
+        )),
+        await projectionRepo.save(await projectionRepo.create(
+            { officiel: false, date: new Date('2023-01-01'), validVotes: 70467, municipality: municipalities[0], label: 'Steal to right' }
+        )),
+        await projectionRepo.save(await projectionRepo.create(
+            { officiel: false, date: new Date('2023-01-01'), validVotes: 70467, municipality: municipalities[1], label: 'Fantasy' }
+        )),
     ]
 }
 
 async function mockParty(repo, projections: Projection[]) {
     const partyRepo = repo.getRepository(Party);
     return [
+        // For the first projection of Brussels, real data
         await partyRepo.save(await partyRepo.create(
-            {label: 'PTB', votes: 8159, projection: projections[0]}
+            { label: 'PTB', votes: 8159, projection: projections[0] }
         )),
         await partyRepo.save(await partyRepo.create(
-            {label: 'CDH', votes: 6543, projection: projections[0]}
+            { label: 'CDH', votes: 6543, projection: projections[0] }
         )),
         await partyRepo.save(await partyRepo.create(
-            {label: 'VB', votes: 1138, projection: projections[0]}
+            { label: 'VB', votes: 1138, projection: projections[0] }
         )),
         await partyRepo.save(await partyRepo.create(
-            {label: 'Ecolo-Groen', votes: 11847, projection: projections[0]}
+            { label: 'Ecolo-Groen', votes: 11847, projection: projections[0] }
         )),
         await partyRepo.save(await partyRepo.create(
-            {label: 'Defi', votes: 5137, projection: projections[0]}
+            { label: 'Defi', votes: 5137, projection: projections[0] }
         )),
         await partyRepo.save(await partyRepo.create(
-            {label: 'PS', votes: 19997, projection: projections[0]}
+            { label: 'PS', votes: 19997, projection: projections[0] }
         )),
         await partyRepo.save(await partyRepo.create(
-            {label: 'MR', votes: 9772, projection: projections[0]}
+            { label: 'MR', votes: 9772, projection: projections[0] }
         )),
         await partyRepo.save(await partyRepo.create(
-            {label: 'NVA', votes: 2606, projection: projections[0]}
+            { label: 'NVA', votes: 2606, projection: projections[0] }
         )),
         await partyRepo.save(await partyRepo.create(
-            {label: 'Change', votes: 2269, projection: projections[0]}
+            { label: 'Change', votes: 2269, projection: projections[0] }
+        )),
+
+        // For a projection of Brussels, fake
+        await partyRepo.save(await partyRepo.create(
+            { label: 'PTB', votes: 10159, projection: projections[1] }
+        )),
+        await partyRepo.save(await partyRepo.create(
+            { label: 'CDH', votes: 5543, projection: projections[1] }
+        )),
+        await partyRepo.save(await partyRepo.create(
+            { label: 'VB', votes: 1138, projection: projections[1] }
+        )),
+        await partyRepo.save(await partyRepo.create(
+            { label: 'Ecolo-Groen', votes: 8847, projection: projections[1] }
+        )),
+        await partyRepo.save(await partyRepo.create(
+            { label: 'Defi', votes: 5137, projection: projections[1] }
+        )),
+        await partyRepo.save(await partyRepo.create(
+            { label: 'PS', votes: 20997, projection: projections[1] }
+        )),
+        await partyRepo.save(await partyRepo.create(
+            { label: 'MR', votes: 7772, projection: projections[1] }
+        )),
+        await partyRepo.save(await partyRepo.create(
+            { label: 'NVA', votes: 3606, projection: projections[1] }
+        )),
+        await partyRepo.save(await partyRepo.create(
+            { label: 'Agora', votes: 4269, projection: projections[1] }
         )),
     ]
 }

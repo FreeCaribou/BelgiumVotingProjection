@@ -21,6 +21,7 @@ export class Projection {
 
     @ManyToOne(() => Municipality, (municipality) => municipality.projections)
     municipality: Municipality;
+    static municipalityRelationName = 'municipality';
 
     @OneToMany(() => Party, (party) => party.projection)
     parties: Party[];
