@@ -1,33 +1,20 @@
 <template>
-  <v-row justify="center" >
-    <v-col cols="12"><h1>Voting Repartition (default value with Brussels City for the moment)</h1></v-col>
+  <v-row justify="center">
+    <v-col cols="12">
+      <h1>Voting Repartition (default value with Brussels City for the moment)</h1>
+    </v-col>
     <v-col md="6" sm="12">
       <div class="mx-auto px-2 py-2 mt-2 mx-2">
         <v-card-title>
           Base information for the circonscription
         </v-card-title>
         <v-card-item>
-          <v-text-field
-            v-model="numberOfSeat"
-            label="Number of seat"
-            placeholder="49"
-            type="number"
-            prepend-icon="mdi:mdi-seat"
-          ></v-text-field>
-          <v-text-field
-            v-model="totalVote"
-            label="Total vote"
-            placeholder="74049"
-            type="number"
-            prepend-icon="mdi:mdi-vote"
-          ></v-text-field>
-          <v-text-field
-            v-model="whiteVote"
-            label="White vote"
-            placeholder="4139"
-            type="number"
-            prepend-icon="mdi:mdi-vote-outline"
-          ></v-text-field>
+          <v-text-field v-model="numberOfSeat" label="Number of seat" placeholder="49" type="number"
+            prepend-icon="mdi:mdi-seat"></v-text-field>
+          <v-text-field v-model="totalVote" label="Total vote" placeholder="74049" type="number"
+            prepend-icon="mdi:mdi-vote"></v-text-field>
+          <v-text-field v-model="whiteVote" label="White vote" placeholder="4139" type="number"
+            prepend-icon="mdi:mdi-vote-outline"></v-text-field>
 
           <v-card variant="tonal" class="px-2 py-2">
             <v-card-title>
@@ -38,23 +25,13 @@
                 <v-card-item>
                   <v-row>
                     <v-col cols="5">
-                      <v-text-field
-                        v-model="party.party"
-                        label="Name"
-                      ></v-text-field>
+                      <v-text-field v-model="party.party" label="Name"></v-text-field>
                     </v-col>
                     <v-col cols="5">
-                      <v-text-field
-                        v-model="party.score"
-                        label="Score"
-                      ></v-text-field>
+                      <v-text-field v-model="party.score" label="Score"></v-text-field>
                     </v-col>
                     <v-col cols="2">
-                      <v-btn 
-                        icon="mdi:mdi-minus" 
-                        color="error" 
-                        size="x-small" 
-                        @click="deleteParty(index)">
+                      <v-btn icon="mdi:mdi-minus" color="error" size="x-small" @click="deleteParty(index)">
                       </v-btn>
                     </v-col>
                   </v-row>
@@ -64,16 +41,10 @@
           </v-card>
         </v-card-item>
         <v-card-actions>
-          <v-btn
-            color="primary"
-            @click="addParty"
-          >
+          <v-btn color="primary" @click="addParty">
             Add a party
           </v-btn>
-          <v-btn
-            color="success"
-            @click="check"
-          >
+          <v-btn color="success" @click="check">
             Check
           </v-btn>
         </v-card-actions>
@@ -115,14 +86,14 @@ export default {
       validVote: 0,
 
       parties: [
-        {party: 'CDH', score: 6543 },
-        {party: 'Ecolo-Groen', score: 11847},
-        {party: 'VB', score: 1138},
-        {party: 'Defi', score: 5137},
-        {party: 'PS', score: 19997},
-        {party: 'MR-VLD', score: 9772},
-        {party: 'NVA', score: 2606},
-        {party: 'PTB-PVDA', score: 8159},
+        { party: 'CDH', score: 6543 },
+        { party: 'Ecolo-Groen', score: 11847 },
+        { party: 'VB', score: 1138 },
+        { party: 'Defi', score: 5137 },
+        { party: 'PS', score: 19997 },
+        { party: 'MR-VLD', score: 9772 },
+        { party: 'NVA', score: 2606 },
+        { party: 'PTB-PVDA', score: 8159 },
         { party: 'Change', score: 2269 },
       ],
       bigArray: [],
@@ -144,22 +115,22 @@ export default {
         i++;
         this.bigArray.forEach(e => {
           let scoreOfThisRow = Math.round(e.score / i);
-      
+
           repartitions.push({
             party: e.party, number: scoreOfThisRow, i
           });
         });
         isOkay = i === 100;
       } while (!isOkay)
-      
-      repartitions.sort((a,b) => {
+
+      repartitions.sort((a, b) => {
         if (a.number <= b.number) {
           return 1;
         } else {
           return -1;
         }
       });
-      
+
       repartitions = repartitions.slice(0, this.numberOfSeat);
       this.bigArray = this.bigArray.map(ba => {
         return { ...ba, numberOfSeat: repartitions.filter(r => r.party === ba.party).length }

@@ -1,5 +1,5 @@
 {
-  "private": true,
+  "name": "belgium-voting-projection-web-front",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
