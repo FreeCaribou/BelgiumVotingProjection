@@ -1,4 +1,5 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import { AddProjectionDto } from '../dto/add-projection.dto';
 import { ProjectionService } from './projection.service';
 
 @Controller('projection')
@@ -21,6 +22,11 @@ export class ProjectionController {
   @Get(':id')
   getOneById(@Param('id') id: number) {
     return this.projectionService.getOneById(id);
+  }
+
+  @Post()
+  add(@Body() addProjectionDto: AddProjectionDto) {
+      return this.projectionService.add(addProjectionDto);
   }
 
 }

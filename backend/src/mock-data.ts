@@ -34,13 +34,13 @@ async function mockProjection(repo, municipalities: Municipality[]) {
     const projectionRepo = repo.getRepository(Projection);
     return [
         await projectionRepo.save(await projectionRepo.create(
-            { officiel: true, date: new Date('2018-10-14'), validVotes: 70467, municipality: municipalities[0], label: 'Official 2018' }
+            { official: true, date: new Date('2018-10-14'), validVotes: 70467, municipality: municipalities[0], label: 'Official 2018' }
         )),
         await projectionRepo.save(await projectionRepo.create(
-            { officiel: false, date: new Date('2023-01-01'), validVotes: 70467, municipality: municipalities[0], label: 'Steal to right' }
+            { official: false, date: new Date('2023-01-01'), validVotes: 70467, municipality: municipalities[0], label: 'Steal to right' }
         )),
         await projectionRepo.save(await projectionRepo.create(
-            { officiel: false, date: new Date('2023-01-01'), validVotes: 70467, municipality: municipalities[1], label: 'Fantasy' }
+            { official: false, date: new Date('2023-01-01'), validVotes: 70467, municipality: municipalities[1], label: 'Fantasy' }
         )),
     ]
 }

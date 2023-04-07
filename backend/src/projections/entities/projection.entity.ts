@@ -14,7 +14,7 @@ export class Projection {
     date: Date;
 
     @Column({ default: false })
-    officiel: boolean;
+    official: boolean;
 
     @Column()
     validVotes: number;

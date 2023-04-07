@@ -8,13 +8,10 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^6.3.0",
-    "nuxt": "^3.2.3",
-    "vite-plugin-vuetify": "^1.0.2",
-    "vuetify": "^3.1.4"
+    "nuxt": "^3.2.3"
   },
   "dependencies": {
-    "@mdi/font": "^7.1.96",
-    "@nuxtjs/axios": "^5.13.6"
+    "@nuxtjs/axios": "^5.13.6",
+    "@vuestic/nuxt": "^1.0.12"
   }
 }
