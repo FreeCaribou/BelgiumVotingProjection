@@ -60,11 +60,27 @@
 
         </va-card-content>
         <va-card-actions>
-          <va-button color="success" @click="checkProjection"> Check </va-button>
-          <va-button color="info" @click="addParty"> Add a party </va-button>
-          <br>
-          <va-input v-model="newProjectionLabel" label="Projection label" class="mr-2"></va-input>
-          <va-button color="info" @click="saveProjection"> Save this projection </va-button>
+          <div class="row">
+            <div class="md12 mb-3">
+              <va-button color="success" @click="checkProjection"> Check </va-button>
+              <va-button color="info" @click="addParty"> Add a party </va-button>
+            </div>
+            <div class="md12 mb-3">
+              <va-input v-model="newProjectionLabel" label="Projection label" class="mr-2"></va-input>
+              <va-button color="info" @click="saveProjection"> Save this projection </va-button>
+            </div>
+            <div class="md12 mb-3">
+              <va-button color="warning" @click="updateProjection">
+                Update this projection: {{ selectedMunicipality?.label }} - {{ selectedProjection?.label }}
+              </va-button>
+            </div>
+            <div class="md12 mb-3">
+              <va-button color="danger" @click="deleteProjection">
+                Delete this projection: {{ selectedMunicipality?.label }} - {{ selectedProjection?.label }}
+              </va-button>
+            </div>
+          </div>
+
         </va-card-actions>
       </va-card>
 
@@ -158,12 +174,12 @@ watch(selectedProjection, (newSelectedProjection) => {
   console.log('change in selectedProjection', newSelectedProjection)
   if (newSelectedProjection) {
     $fetch(`http://localhost:1979/projection/${newSelectedProjection.id}`).then(data => {
-    console.log('new projection selected', data)
-    parties.value = data.parties;
-    validVotes.value = data.validVotes;
-    official.value = data.official;
-    checkProjection();
-  });
+      console.log('new projection selected', data)
+      parties.value = data.parties;
+      validVotes.value = data.validVotes;
+      official.value = data.official;
+      checkProjection();
+    });
   }
 });
 
@@ -241,12 +257,36 @@ function saveProjection() {
       official: official.value,
       validVotes: validVotes.value,
       municipality: { id: selectedMunicipality.value.id },
-      parties: parties.value.map(p => {return {label: p.label, votes: parseInt(p.votes)}})
+      parties: parties.value.map(p => { return { label: p.label, votes: parseInt(p.votes) } })
     }
   }).finally(() => {
     newProjectionLabel.value = null;
     fetchProjections();
   });
 }
+
+function deleteProjection() {
+  $fetch(`http://localhost:1979/projection/${selectedProjection.value.id}`, {
+    method: 'DELETE',
+  }).finally(() => {
+    fetchProjections();
+  });
+}
+
+function updateProjection() {
+  console.log('and the party ?', parties.value)
+  $fetch(`http://localhost:1979/projection/${selectedProjection.value.id}`, {
+    method: 'PUT',
+    body: {
+      official: official.value,
+      validVotes: validVotes.value,
+      parties: parties.value.map(p => { return { label: p.label, votes: parseInt(p.votes) } })
+    }
+  }).finally(() => {
+    newProjectionLabel.value = null;
+  });
+}
+
+
 
 </script>

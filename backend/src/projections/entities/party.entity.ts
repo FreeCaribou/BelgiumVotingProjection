@@ -13,6 +13,6 @@ export class Party {
     @Column()
     votes: number;
 
-    @ManyToOne(() => Projection, (projection) => projection.parties)
+    @ManyToOne(() => Projection, (projection) => projection.parties, { onDelete: 'CASCADE' })
     projection: Projection;
 }

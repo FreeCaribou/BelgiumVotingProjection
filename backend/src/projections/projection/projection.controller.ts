@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
 import { AddProjectionDto } from '../dto/add-projection.dto';
+import { UpdateProjectionDto } from '../dto/update-projection.dto';
 import { ProjectionService } from './projection.service';
 
 @Controller('projection')
@@ -27,6 +28,16 @@ export class ProjectionController {
   @Post()
   add(@Body() addProjectionDto: AddProjectionDto) {
       return this.projectionService.add(addProjectionDto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: number) {
+    return this.projectionService.delete(id);
+  }
+
+  @Put(':id')
+  update(@Body() updateProjectionDto: UpdateProjectionDto, @Param('id') id: number) {
+      return this.projectionService.update(updateProjectionDto, id);
   }
 
 }

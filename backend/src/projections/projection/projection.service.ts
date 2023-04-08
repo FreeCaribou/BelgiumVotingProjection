@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AddProjectionDto } from '../dto/add-projection.dto';
+import { UpdateProjectionDto } from '../dto/update-projection.dto';
 import { Party } from '../entities/party.entity';
 import { Projection } from '../entities/projection.entity';
 
@@ -45,7 +46,6 @@ export class ProjectionService {
 
   // TODO sync mode please
   async add(addProjectionDto: AddProjectionDto) {
-    console.log('projection dto ?', addProjectionDto)
     let projection = await this.projectionRepository.save(this.projectionRepository.create(addProjectionDto));
     for (let i = 0; i < addProjectionDto.parties.length; i++) {
       await this.partyRepository.save(this.partyRepository.create({
@@ -54,7 +54,29 @@ export class ProjectionService {
         votes: addProjectionDto.parties[i].votes,
       }));
     }
-    return projection;
+    projection.date = new Date();
+    return this.projectionRepository.save(projection);
+  }
+
+  delete(id: number) {
+    return this.projectionRepository.delete(id);
+  }
+
+  // TODO sync mode please
+  async update(updateProjectionDto: UpdateProjectionDto, id: number) {
+    let projection = await this.projectionRepository.findOne({where: {id: id}});
+    await this.partyRepository.delete({ projection: {id: id} });
+    for (let i = 0; i < updateProjectionDto.parties.length; i++) {
+      await this.partyRepository.save(this.partyRepository.create({
+        projection,
+        label: updateProjectionDto.parties[i].label,
+        votes: updateProjectionDto.parties[i].votes,
+      }));
+    }
+    projection.official = updateProjectionDto.official;
+    projection.validVotes = updateProjectionDto.validVotes;
+    projection.date = new Date();
+    return this.projectionRepository.save(projection);
   }
 
 }
