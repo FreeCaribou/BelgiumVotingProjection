@@ -116,6 +116,8 @@
 
 <script setup>
 
+const appConfig = useAppConfig();
+
 let numberOfSeat = ref(49);
 let validVotes = ref(69910);
 let official = ref(false);
@@ -132,7 +134,7 @@ let parties = ref([
 ]);
 let bigArray = ref([]);
 
-const { data: municipalities, refresh } = useLazyAsyncData('municipalities', () => $fetch('http://localhost:1979/municipality'));
+const { data: municipalities, refresh } = useLazyAsyncData('municipalities', () => $fetch(`${appConfig.baseUrl}/municipality`));
 let selectedMunicipality = ref();
 
 let projections = ref([]);
@@ -146,7 +148,7 @@ let newPriority = ref(false);
 let newProjectionLabel = ref();
 
 function fetchProjections() {
-  $fetch(`http://localhost:1979/projection/municipality/${selectedMunicipality.value.id}`).then(data => {
+  $fetch(`${appConfig.baseUrl}/projection/municipality/${selectedMunicipality.value.id}`).then(data => {
     console.log('fetch projections', data, selectedMunicipality.value)
     projections.value = data;
     numberOfSeat.value = selectedMunicipality.value.totalSeats;
@@ -173,7 +175,7 @@ watch(projections, (newProjections) => {
 watch(selectedProjection, (newSelectedProjection) => {
   console.log('change in selectedProjection', newSelectedProjection)
   if (newSelectedProjection) {
-    $fetch(`http://localhost:1979/projection/${newSelectedProjection.id}`).then(data => {
+    $fetch(`${appConfig.baseUrl}/projection/${newSelectedProjection.id}`).then(data => {
       console.log('new projection selected', data)
       parties.value = data.parties;
       validVotes.value = data.validVotes;
@@ -233,7 +235,7 @@ function addMunicipality() {
   console.log('add municipality', newMunicipality, newNumberOfSeat)
   showAddMunicipalityModal.value = false;
 
-  $fetch(`http://localhost:1979/municipality`, {
+  $fetch(`${appConfig.baseUrl}/municipality`, {
     method: 'POST',
     body: {
       label: newMunicipality.value,
@@ -250,7 +252,7 @@ function addMunicipality() {
 
 function saveProjection() {
   console.log('and the party ?', parties.value)
-  $fetch(`http://localhost:1979/projection`, {
+  $fetch(`${appConfig.baseUrl}/projection`, {
     method: 'POST',
     body: {
       label: newProjectionLabel.value,
@@ -266,7 +268,7 @@ function saveProjection() {
 }
 
 function deleteProjection() {
-  $fetch(`http://localhost:1979/projection/${selectedProjection.value.id}`, {
+  $fetch(`${appConfig.baseUrl}/projection/${selectedProjection.value.id}`, {
     method: 'DELETE',
   }).finally(() => {
     fetchProjections();
@@ -275,7 +277,7 @@ function deleteProjection() {
 
 function updateProjection() {
   console.log('and the party ?', parties.value)
-  $fetch(`http://localhost:1979/projection/${selectedProjection.value.id}`, {
+  $fetch(`${appConfig.baseUrl}/projection/${selectedProjection.value.id}`, {
     method: 'PUT',
     body: {
       official: official.value,
@@ -286,7 +288,5 @@ function updateProjection() {
     newProjectionLabel.value = null;
   });
 }
-
-
 
 </script>

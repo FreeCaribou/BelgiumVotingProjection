@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
-    "@vuestic/nuxt": "^1.0.12"
+    "@vuestic/nuxt": "^1.0.12",
+    "dotenv": "^16.0.3"
   }
 }
