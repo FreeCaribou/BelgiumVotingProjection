@@ -1,3 +1,3 @@
 export default defineAppConfig({
-  baseUrl: 'http://api-belgium-voting.whoissamy.be'
+  baseUrl: 'https://api-belgium-voting.whoissamy.be'
 })
