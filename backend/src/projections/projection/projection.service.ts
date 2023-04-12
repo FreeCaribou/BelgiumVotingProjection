@@ -46,8 +46,14 @@ export class ProjectionService {
 
   // TODO sync mode please
   add(addProjectionDto: AddProjectionDto) {
-    return { hello: 'world' };
-    return this.projectionRepository.save(this.projectionRepository.create(addProjectionDto));
+    return this.projectionRepository.save(this.projectionRepository.create({
+      date: new Date(),
+      label: 'Hello',
+      official: false,
+      validVotes: 10000,
+      municipality: {id: 1}
+    }));
+    // return this.projectionRepository.save(this.projectionRepository.create(addProjectionDto));
     // let projection = await this.projectionRepository.save(await this.projectionRepository.create(addProjectionDto));
     // for (let i = 0; i < addProjectionDto.parties.length; i++) {
     //   await this.partyRepository.save(await this.partyRepository.create({
