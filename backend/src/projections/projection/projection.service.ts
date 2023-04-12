@@ -46,6 +46,7 @@ export class ProjectionService {
 
   // TODO sync mode please
   add(addProjectionDto: AddProjectionDto) {
+    return { hello: 'world' };
     return this.projectionRepository.save(this.projectionRepository.create(addProjectionDto));
     // let projection = await this.projectionRepository.save(await this.projectionRepository.create(addProjectionDto));
     // for (let i = 0; i < addProjectionDto.parties.length; i++) {
