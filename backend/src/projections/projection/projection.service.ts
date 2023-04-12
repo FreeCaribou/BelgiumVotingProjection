@@ -45,9 +45,9 @@ export class ProjectionService {
   }
 
   // TODO sync mode please
-  async add(addProjectionDto: AddProjectionDto) {
-    return this.projectionRepository.save(await this.projectionRepository.create(addProjectionDto));
-    let projection = await this.projectionRepository.save(await this.projectionRepository.create(addProjectionDto));
+  add(addProjectionDto: AddProjectionDto) {
+    return this.projectionRepository.save(this.projectionRepository.create(addProjectionDto));
+    // let projection = await this.projectionRepository.save(await this.projectionRepository.create(addProjectionDto));
     // for (let i = 0; i < addProjectionDto.parties.length; i++) {
     //   await this.partyRepository.save(await this.partyRepository.create({
     //     projection,
@@ -55,8 +55,8 @@ export class ProjectionService {
     //     votes: addProjectionDto.parties[i].votes,
     //   }));
     // }
-    projection.date = new Date();
-    return this.projectionRepository.save(projection);
+    // projection.date = new Date();
+    // return this.projectionRepository.save(projection);
   }
 
   delete(id: number) {
