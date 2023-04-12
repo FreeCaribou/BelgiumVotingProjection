@@ -1,3 +1,4 @@
 export default defineAppConfig({
-  baseUrl: 'https://api-belgium-voting.whoissamy.be'
+  // baseUrl: 'http://localhost:1979',
+  baseUrl: 'https://api-belgium-voting.whoissamy.be',
 })

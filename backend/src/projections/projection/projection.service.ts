@@ -48,7 +48,7 @@ export class ProjectionService {
   async add(addProjectionDto: AddProjectionDto) {
     let projection = await this.projectionRepository.save(this.projectionRepository.create(addProjectionDto));
     for (let i = 0; i < addProjectionDto.parties.length; i++) {
-      await this.partyRepository.save(this.partyRepository.create({
+      await this.partyRepository.save(await this.partyRepository.create({
         projection,
         label: addProjectionDto.parties[i].label,
         votes: addProjectionDto.parties[i].votes,
