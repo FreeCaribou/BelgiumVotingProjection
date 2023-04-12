@@ -48,10 +48,10 @@ export class ProjectionService {
   add(addProjectionDto: AddProjectionDto) {
     return this.projectionRepository.save(this.projectionRepository.create({
       date: new Date(),
-      label: 'Hello',
-      official: false,
-      validVotes: 10000,
-      municipality: {id: 1}
+      label: addProjectionDto.label,
+      official: addProjectionDto.official,
+      validVotes: addProjectionDto.validVotes,
+      municipality: {id: addProjectionDto.municipality.id}
     }));
     // return this.projectionRepository.save(this.projectionRepository.create(addProjectionDto));
     // let projection = await this.projectionRepository.save(await this.projectionRepository.create(addProjectionDto));
